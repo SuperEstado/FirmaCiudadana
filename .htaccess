@@ -1,0 +1,21 @@
+<IfModule mod_rewrite.c>
+# Make sure directory listing is disabled
+Options +FollowSymLinks -Indexes
+RewriteEngine on
+# Keep people out of codeigniter directory and Git/Mercurial data
+RedirectMatch 403 ^/(system\/cache|system\/codeigniter|\.git|\.hg).*$
+# Send request via index.php (again, not if its a real file or folder)
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+<IfModule mod_php5.c>
+RewriteRule ^(.*)$ index.php/$1 [QSA,L]
+</IfModule>
+<IfModule !mod_php5.c>
+RewriteRule ^(.*)$ index.php?/$1 [QSA,L]
+</IfModule>
+</IfModule>
+php_flag display_startup_errors on
+php_flag display_errors on
+php_flag html_errors on
+php_value docref_root 0
+php_value docref_ext 0
